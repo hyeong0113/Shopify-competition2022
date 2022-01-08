@@ -31,7 +31,6 @@ const Nasa: FC = () => {
 
     const [dataList, setDataList] = useState([]);
 
-    console.log(process.env.REACT_APP_NASA_API_KEY);
     const roverNameApi = `https://api.nasa.gov/mars-photos/api/v1/manifests/${roverKey}?api_key=${process.env.REACT_APP_NASA_API_KEY}`;
     const photoListApi = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverKey}/photos?camera=${camera}&sol=${sol}&api_key=${process.env.REACT_APP_NASA_API_KEY}`;
 
@@ -147,6 +146,7 @@ const Nasa: FC = () => {
                     (dataList.map((photo, photoKey) => (
                         <div key={photoKey}>
                             <PhotoComponent
+                                photoId={photo["id"]}
                                 image={photo["img_src"]}
                                 roverName={photo["rover"]["name"]}
                                 cameraName={photo["camera"]["full_name"]}
