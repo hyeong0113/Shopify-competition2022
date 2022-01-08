@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Description
-This application is written by Hyungjune Kwak. The purpose of the application is dsiplaying images of the Mars captured by Nasa.
+This application is written by Hyungjune Kwak. The purpose of the application is dsiplaying images of the Mars captured by Nasa. In the application, an user can select type of a rover. Then, value of sol(Martian rotation/day) should be typed and type of a camear should be selected to bring list of photos.
 This application is deployed by Heroku.
 
 url: https://shopifynasaapp.herokuapp.com/
