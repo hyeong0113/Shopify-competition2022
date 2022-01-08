@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Description
+This application is written by Hyungjune Kwak. The purpose of the application is dsiplaying images of the Mars captured by Nasa.
+This application is deployed by Heroku.
+
+url: https://shopifynasaapp.herokuapp.com/
+
+## Technology used
+For implementation, React Hooks and typescript are used. For UI component, Material UI is used to ellaborate the frontend.
+
 ## Available Scripts
 
 In the project directory, you can run:
