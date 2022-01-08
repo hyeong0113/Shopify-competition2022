@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardMedia, CardContent, Typography, Button } from '@mui/material';
+import './photoContent.css';
 
 type PhotoContentProps = {
+    key: number;
     image: string;
     roverName: string;
     cameraName: string;
@@ -13,51 +15,31 @@ const PhotoComponent = (props: PhotoContentProps) => {
     let [numLike, setNumLike] =  useState(0);
     const [liked, setLiked] = useState(false);
 
-    console.log(`check loaded?? ${window.localStorage.getItem(`${props.photoId}_numLikes`)}`);
     // Fetch rover info with given rover name
     useEffect(() => {
         if (!window.localStorage.getItem(`${props.photoId}_numLikes`)) {
-            console.log("처음봄");
             return;
         }
         else {
-            console.log("seen");
             setNumLike(Number(window.localStorage.getItem(`${props.photoId}_numLikes`)));
         }
     }, []);
 
     function handleLiked() {
-        console.log(`Before clicked ${liked}`);
         setLiked(!liked);
-        console.log(`After clicked ${liked}`);
 
         if (!liked) {
-            console.log("incerase");
-            setNumLike(numLike+1);
-            localStorage.setItem(`${props.photoId}_numLikes`, numLike.toString());
-
-            console.log(numLike);
-            console.log(Number(window.localStorage.getItem(`${props.photoId}_numLikes`)));
+            const incerasedLiked = numLike+1;
+            localStorage.setItem(`${props.photoId}_numLikes`, incerasedLiked.toString());
+            setNumLike(incerasedLiked);
         }
         else {
-            console.log("decrease");
-            setNumLike(numLike-1);
-            localStorage.setItem(`${props.photoId}_numLikes`, numLike.toString());
-
-            console.log(numLike);
-            console.log(Number(window.localStorage.getItem(`${props.photoId}_numLikes`)));
+            const decreasedLiked = numLike-1;
+            localStorage.setItem(`${props.photoId}_numLikes`, decreasedLiked.toString());
+            setNumLike(decreasedLiked);
         }
     }
 
-    // function handleNumLike(scale: number) {
-    //     console.log(`Before calc ${numLike}`);
-    //     setNumLike(numLike+scale);
-    //     console.log(`After calc ${numLike}`);
-
-    //     localStorage.setItem(`${props.photoId}_numLikes`, numLike.toString());
-    // }
-
-    // Dispkay message: "Like" or "Liked"
     function showLikeMessage() {
         if (liked) {
             return "Liked";
@@ -68,7 +50,7 @@ const PhotoComponent = (props: PhotoContentProps) => {
     }
 
     return (
-        <Card sx={{ width: 400, height: 300, marginBottom: 5 }}>
+        <Card className="card-content">
             <CardMedia
                 component="img"
                 height="194"
@@ -83,7 +65,7 @@ const PhotoComponent = (props: PhotoContentProps) => {
                     {props.earthDate}
                 </Typography>
             </CardContent>
-            <Button variant="contained" onClick={handleLiked}>{showLikeMessage()} {numLike}</Button>
+            <Button className="like-button" variant="contained" onClick={handleLiked}>{showLikeMessage()}:{numLike}</Button>
         </Card>
     )
 }

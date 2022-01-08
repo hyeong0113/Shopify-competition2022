@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState, ChangeEvent } from 'react';
 import axios from 'axios';
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField, CircularProgress } from '@mui/material';
 
 import PhotoComponent from '../photoContent';
 import NoResult from '../noContent';
+import './nasa.css';
 
 const ROVER_LIST = [
     {key: "curiosity", name: "Curiosity"},
@@ -99,13 +100,13 @@ const Nasa: FC = () => {
     return (
         <div>
             <div className="input-form">
-                <FormControl fullWidth>
-                    <InputLabel id="rover-key-select-label">Select Rover</InputLabel>
+                <FormControl className="input-form-content">
+                    <InputLabel id="rover-key-select-label">Select a type of Rover first</InputLabel>
                     <Select
                         labelId="rover-key-select-label"
                         id="rover-key-select"
                         value={roverKey}
-                        label="Select Rover"
+                        label="Select a type of Rover first"
                         onChange={handleRoverKeyChange}
                     >
                         {ROVER_LIST.map((e, k) => (
@@ -113,19 +114,19 @@ const Nasa: FC = () => {
                         ))}
                     </Select>
                 </FormControl>
-                <FormControl fullWidth>
+                <FormControl className="input-form-content">
                     <TextField
                         id="sol-form"
                         label="Type value of sol(Martian rotation/day)"
                         variant="outlined"
                         value={sol}
-                        helperText={`Type 0~${maxSol}`}
+                        helperText={`Type from 0 to ${maxSol}`}
                         onChange={handleSolChange}
                         required={true}
                         disabled={maxSol === 0}
                     />
                 </FormControl>
-                <FormControl fullWidth disabled={maxSol === 0}>
+                <FormControl className="input-form-content" disabled={maxSol === 0}>
                     <InputLabel id="camera-select-label">Select Camera*</InputLabel>
                     <Select
                         labelId="camera-select-label"
@@ -144,15 +145,14 @@ const Nasa: FC = () => {
             <div className="content-body">
                 {dataList.length !== 0 ? 
                     (dataList.map((photo, photoKey) => (
-                        <div key={photoKey}>
-                            <PhotoComponent
-                                photoId={photo["id"]}
-                                image={photo["img_src"]}
-                                roverName={photo["rover"]["name"]}
-                                cameraName={photo["camera"]["full_name"]}
-                                earthDate={photo["earth_date"]}
-                            />
-                        </div>
+                        <PhotoComponent
+                            key={photoKey}
+                            photoId={photo["id"]}
+                            image={photo["img_src"]}
+                            roverName={photo["rover"]["name"]}
+                            cameraName={photo["camera"]["full_name"]}
+                            earthDate={photo["earth_date"]}
+                        />
                     )))
                     : <NoResult />
                 }

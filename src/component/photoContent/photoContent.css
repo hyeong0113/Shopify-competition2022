@@ -1,0 +1,13 @@
+.card-content {
+    width: 25%;
+    height: 350;
+    margin-top: auto;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 10px;
+    /* margin-left: "37.5%"; */
+}
+
+.like-button {
+    margin-left: 75% !important;
+}
