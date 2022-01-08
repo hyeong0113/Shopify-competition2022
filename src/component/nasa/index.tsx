@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField } from '@mui/material';
 
 import PhotoComponent from '../photoContent';
+import NoResult from '../noContent';
 
 const ROVER_LIST = [
     {key: "curiosity", name: "Curiosity"},
@@ -24,14 +25,16 @@ const CAMERA_LIST = [
 
 const Nasa: FC = () => {
     const [roverKey, setroverKey] = useState("");
-    const [roverInfo, setRoverInfo] = useState([]);
+    // const [roverInfo, setRoverInfo] = useState([]);
     const [maxSol, setMaxSol] = useState(0);
-    const [sol, setSol] = useState(0);
+    const [sol, setSol] = useState("");
+    const [camera, setCamera] = useState("");
 
     const [dataList, setDataList] = useState([]);
 
-    const api = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverKey}/photos?camera=fhaz&sol=${sol}&api_key=fh6cef5302XFOLsSDXRQPWEj8cZaMMWhrkhP7YCS`;
-    const roverNameapi = `https://api.nasa.gov/mars-photos/api/v1/manifests/${roverKey}?api_key=fh6cef5302XFOLsSDXRQPWEj8cZaMMWhrkhP7YCS`;
+    console.log(process.env.REACT_APP_NASA_API_KEY);
+    const api = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverKey}/photos?camera=${camera}&sol=${sol}&api_key=${process.env.REACT_APP_NASA_API_KEY}`;
+    const roverNameapi = `https://api.nasa.gov/mars-photos/api/v1/manifests/${roverKey}?api_key=${process.env.REACT_APP_NASA_API_KEY}`;
 
     // Fetch rover info with given rover name
     useEffect(() => {
@@ -62,12 +65,12 @@ const Nasa: FC = () => {
         else {
             return;
         }
-    }, [roverKey, sol]);
+    }, [roverKey, sol, camera]);
 
     function fetchRoverInfo(roverKey: string, apiUrl: string) {
         axios.get(roverNameapi).then(
             (response) => {
-                setRoverInfo(response.data["photo_manifest"]);
+                // setRoverInfo(response.data["photo_manifest"]);
                 setMaxSol(response.data["photo_manifest"]["max_sol"]);
             },
             (error) => {
@@ -85,7 +88,12 @@ const Nasa: FC = () => {
     }
 
     function handleSolChange(event: ChangeEvent<HTMLInputElement>) {
-        setSol(Number(event.target.value));
+        // setSol(Number(event.target.value));
+        setSol(event.target.value as string);
+    }
+
+    function handleCameraChange(event: SelectChangeEvent) {
+        setCamera(event.target.value as string);
     }
 
     return (
@@ -98,39 +106,56 @@ const Nasa: FC = () => {
                         labelId="rover-key-select-label"
                         id="rover-key-select"
                         value={roverKey}
-                        label="roverKey"
+                        label="Select Rover"
                         onChange={handleRoverKeyChange}
                     >
                         {ROVER_LIST.map((e, k) => (
                             <MenuItem key={k} value={e.key}>{e.name}</MenuItem>
                         ))}
                     </Select>
-                    {maxSol !== 0 ? 
-                        <TextField
-                            id="sol-form"
-                            type="number"
-                            label="Outlined"
-                            variant="outlined"
-                            value={sol}
-                            placeholder={`Type 0~${maxSol}`}
-                            onChange={handleSolChange}
-                        />                    
-                        : null
-                    }
-
+                </FormControl>
+                <FormControl fullWidth>
+                    <TextField
+                        id="sol-form"
+                        label="Type value of sol(Martian rotation/day)"
+                        variant="outlined"
+                        value={sol}
+                        helperText={`Type 0~${maxSol}`}
+                        onChange={handleSolChange}
+                        required={true}
+                        disabled={maxSol === 0}
+                    />
+                </FormControl>
+                <FormControl fullWidth disabled={maxSol === 0}>
+                    <InputLabel id="camera-select-label">Select Camera*</InputLabel>
+                    <Select
+                        labelId="camera-select-label"
+                        id="camera-select"
+                        value={camera}
+                        label="Select Camera*"
+                        onChange={handleCameraChange}
+                        required={true}
+                    >
+                        {CAMERA_LIST.map((e, k) => (
+                            <MenuItem key={k} value={e.key}>{e.name}</MenuItem>
+                        ))}
+                    </Select>
                 </FormControl>
             </div>
             <div className="content-body">
-                {dataList.map((photo, photoKey) => (
-                    <div key={photoKey}>
-                        <PhotoComponent
-                            image={photo["img_src"]}
-                            roverName={photo["rover"]["name"]}
-                            cameraName={photo["camera"]["full_name"]}
-                            earthDate={photo["earth_date"]}
-                        />
-                    </div>
-                ))}
+                {dataList.length !== 0 ? 
+                    (dataList.map((photo, photoKey) => (
+                        <div key={photoKey}>
+                            <PhotoComponent
+                                image={photo["img_src"]}
+                                roverName={photo["rover"]["name"]}
+                                cameraName={photo["camera"]["full_name"]}
+                                earthDate={photo["earth_date"]}
+                            />
+                        </div>
+                    )))
+                    : <NoResult />
+                }
             </div>
         </div>
     )
