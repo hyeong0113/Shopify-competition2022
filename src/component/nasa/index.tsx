@@ -25,7 +25,6 @@ const CAMERA_LIST = [
 
 const Nasa: FC = () => {
     const [roverKey, setroverKey] = useState("");
-    // const [roverInfo, setRoverInfo] = useState([]);
     const [maxSol, setMaxSol] = useState(0);
     const [sol, setSol] = useState("");
     const [camera, setCamera] = useState("");
@@ -33,13 +32,13 @@ const Nasa: FC = () => {
     const [dataList, setDataList] = useState([]);
 
     console.log(process.env.REACT_APP_NASA_API_KEY);
-    const api = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverKey}/photos?camera=${camera}&sol=${sol}&api_key=${process.env.REACT_APP_NASA_API_KEY}`;
-    const roverNameapi = `https://api.nasa.gov/mars-photos/api/v1/manifests/${roverKey}?api_key=${process.env.REACT_APP_NASA_API_KEY}`;
+    const roverNameApi = `https://api.nasa.gov/mars-photos/api/v1/manifests/${roverKey}?api_key=${process.env.REACT_APP_NASA_API_KEY}`;
+    const photoListApi = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverKey}/photos?camera=${camera}&sol=${sol}&api_key=${process.env.REACT_APP_NASA_API_KEY}`;
 
     // Fetch rover info with given rover name
     useEffect(() => {
         if (roverKey !== "") {
-            fetchRoverInfo(roverKey, roverNameapi);
+            fetchRoverInfo(roverNameApi);
         }
         else {
             return;
@@ -49,28 +48,16 @@ const Nasa: FC = () => {
     // Fetch list of photos with given values
     useEffect(() => {
         if (roverKey !== "") {
-            axios.get(api).then(
-                (response) => {
-                    setDataList(response.data["photos"]);  
-                },
-                (error) => {
-                    const _content =
-                    (error.response && error.response.data) ||
-                    error.message ||
-                    error.toString();
-                    setDataList(_content);
-                }
-            );
+            fetchPhotoList(photoListApi);
         }
         else {
             return;
         }
     }, [roverKey, sol, camera]);
 
-    function fetchRoverInfo(roverKey: string, apiUrl: string) {
-        axios.get(roverNameapi).then(
+    function fetchRoverInfo(apiUrl: string) {
+        axios.get(apiUrl).then(
             (response) => {
-                // setRoverInfo(response.data["photo_manifest"]);
                 setMaxSol(response.data["photo_manifest"]["max_sol"]);
             },
             (error) => {
@@ -83,12 +70,26 @@ const Nasa: FC = () => {
         );
     }
 
+    function fetchPhotoList(apiUrl: string) {
+        axios.get(apiUrl).then(
+            (response) => {
+                setDataList(response.data["photos"]);  
+            },
+            (error) => {
+                const _content =
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+                setDataList(_content);
+            }
+        );
+    }   
+
     function handleRoverKeyChange(event: SelectChangeEvent) {
         setroverKey(event.target.value as string);
     }
 
     function handleSolChange(event: ChangeEvent<HTMLInputElement>) {
-        // setSol(Number(event.target.value));
         setSol(event.target.value as string);
     }
 
@@ -98,7 +99,6 @@ const Nasa: FC = () => {
 
     return (
         <div>
-            {/* <Button variant="text" onClick={() => this.fetchApi()}>Text</Button> */}
             <div className="input-form">
                 <FormControl fullWidth>
                     <InputLabel id="rover-key-select-label">Select Rover</InputLabel>
@@ -162,13 +162,3 @@ const Nasa: FC = () => {
 }
 
 export default Nasa;
-
-/**
- * camera: FHAZ, RHAZ, MAST, CHEMCAM, MAHLI, MARDI, NAVCAM, PANCAM, MINITES
- * 
- * 
- * rover name: Curiosity, Opportunity, Spirit
- * 
- * 
- * https://api.nasa.gov/mars-photos/api/v1/manifests/curiosity?api_key=fh6cef5302XFOLsSDXRQPWEj8cZaMMWhrkhP7YCS
- */
