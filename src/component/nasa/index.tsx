@@ -26,6 +26,7 @@ const CAMERA_LIST = [
 
 const Nasa: FC = () => {
     const [roverKey, setroverKey] = useState("");
+    const [roverKeyFetched, setRoverKeyFetched] = useState(false);
     const [maxSol, setMaxSol] = useState(0);
     const [sol, setSol] = useState("");
     const [camera, setCamera] = useState("");
@@ -39,6 +40,7 @@ const Nasa: FC = () => {
     useEffect(() => {
         if (roverKey !== "") {
             fetchRoverInfo(roverNameApi);
+            setRoverKeyFetched(true);
         }
         else {
             return;
@@ -83,7 +85,21 @@ const Nasa: FC = () => {
                 setDataList(_content);
             }
         );
-    }   
+    }
+
+    function displayLoadingStatus() {
+        if (!roverKeyFetched) {
+            return <NoResult />;
+        }
+        else {
+            return (
+                <div className="loading">
+                    <p>Please fill in other informations</p>
+                    <CircularProgress />
+                </div>
+            )
+        }
+    }
 
     function handleRoverKeyChange(event: SelectChangeEvent) {
         setroverKey(event.target.value as string);
@@ -154,7 +170,7 @@ const Nasa: FC = () => {
                             earthDate={photo["earth_date"]}
                         />
                     )))
-                    : <NoResult />
+                    : displayLoadingStatus()
                 }
             </div>
         </div>

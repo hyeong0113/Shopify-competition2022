@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardMedia, CardContent, Typography, Button } from '@mui/material';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import CheckIcon from '@mui/icons-material/Check';
 import './photoContent.css';
 
 type PhotoContentProps = {
@@ -61,11 +63,14 @@ const PhotoComponent = (props: PhotoContentProps) => {
                 <Typography variant="body1" color="text.secondary">
                     {props.roverName} rover - {props.cameraName}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography className="earth-date-info" variant="body2" color="text.secondary">
                     {props.earthDate}
                 </Typography>
             </CardContent>
-            <Button className="like-button" variant="contained" onClick={handleLiked}>{showLikeMessage()}:{numLike}</Button>
+            <Button className="like-button" variant="contained" onClick={handleLiked}>
+                {liked === false ? <ThumbUpIcon className="thumb-icon" /> : <CheckIcon className="check-icon" />}
+                {showLikeMessage()}:{numLike}
+            </Button>
         </Card>
     )
 }

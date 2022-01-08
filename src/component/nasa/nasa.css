@@ -1,3 +1,11 @@
 .input-form-content {
     width: 25%;
 }
+
+.loading {
+    margin-top: 30px;
+}
+
+.content-body {
+    margin-top: 30px;
+}

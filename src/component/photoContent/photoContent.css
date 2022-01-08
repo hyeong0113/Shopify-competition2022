@@ -5,9 +5,23 @@
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 10px;
-    /* margin-left: "37.5%"; */
 }
 
 .like-button {
     margin-left: 75% !important;
+}
+
+.earth-date-info {
+    position: absolute;
+    padding-left: 15px;
+}
+
+.thumb-icon {
+    font-size: 1.0rem !important;
+    padding-right: 2px;
+}
+
+.check-icon {
+    font-size: 1.0rem !important;
+    padding-right: 2px;
 }
