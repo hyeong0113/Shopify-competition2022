@@ -11,8 +11,12 @@
     margin-left: 75% !important;
 }
 
+.rover-name {
+    float: left;
+}
+
 .earth-date-info {
-    padding-right: 72%;
+    float: left;
 }
 
 .thumb-icon {
