@@ -17,7 +17,10 @@ const PhotoComponent = (props: PhotoContentProps) => {
     let [numLike, setNumLike] =  useState(0);
     const [liked, setLiked] = useState(false);
 
-    // Fetch rover info with given rover name
+    /**
+     * If the card has saved number of likes, call the information from local storage.
+     * If note, return nothing.
+     */
     useEffect(() => {
         if (!window.localStorage.getItem(`${props.photoId}_numLikes`)) {
             return;
@@ -27,21 +30,35 @@ const PhotoComponent = (props: PhotoContentProps) => {
         }
     }, []);
 
-    function handleLiked() {
+    /**
+     * Handle number of likes
+     */
+    function handleNumLike() {
         setLiked(!liked);
-
         if (!liked) {
-            const incerasedLiked = numLike+1;
-            localStorage.setItem(`${props.photoId}_numLikes`, incerasedLiked.toString());
-            setNumLike(incerasedLiked);
+            // If user likes, increase number of likes by 1.
+            handleNumLikeHelper(1);
         }
         else {
-            const decreasedLiked = numLike-1;
-            localStorage.setItem(`${props.photoId}_numLikes`, decreasedLiked.toString());
-            setNumLike(decreasedLiked);
+            // If user does not like, decerase number of likes by 1.
+            handleNumLikeHelper(-1);
         }
     }
 
+    /**
+     * Helper function of handleNumLike()
+     * @param signLike Value is +1 or -1 along with status of like.
+     */
+    function handleNumLikeHelper(signLike: number) {
+        const updatedNumLikes = numLike+signLike;
+        localStorage.setItem(`${props.photoId}_numLikes`, updatedNumLikes.toString());
+        setNumLike(updatedNumLikes);
+    }
+
+    /**
+     * 
+     * @returns Display "Like" or "Liked" along with user click "Like" button
+     */
     function showLikeMessage() {
         if (liked) {
             return "Liked";
@@ -60,14 +77,16 @@ const PhotoComponent = (props: PhotoContentProps) => {
                 alt="space-photo"
             />
             <CardContent>
-                <Typography variant="body1" color="text.secondary">
-                    {props.roverName} rover - {props.cameraName}
-                </Typography>
-                <Typography className="earth-date-info" variant="body2" color="text.secondary">
-                    {props.earthDate}
-                </Typography>
+                <div className="body-content">
+                    <Typography className="rover-name" variant="body1" color="text.secondary">
+                        {props.roverName} rover - {props.cameraName}
+                    </Typography>
+                    <Typography className="earth-date-info" variant="body2" color="text.secondary">
+                        {props.earthDate}
+                    </Typography>
+                </div>
             </CardContent>
-            <Button className="like-button" variant="contained" onClick={handleLiked}>
+            <Button className="like-button" variant="contained" onClick={handleNumLike}>
                 {liked === false ? <ThumbUpIcon className="thumb-icon" /> : <CheckIcon className="check-icon" />}
                 {showLikeMessage()}:{numLike}
             </Button>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField, CircularProgress } from '@mui/material';
 
 import PhotoComponent from '../photoContent';
-import NoResult from '../noContent';
+import NoResult from '../noResult';
 import './nasa.css';
 
 const ROVER_LIST = [
@@ -57,6 +57,10 @@ const Nasa: FC = () => {
         }
     }, [roverKey, sol, camera]);
 
+    /**
+     * Helper function to fetch rover info with given rover name
+     * @param apiUrl Api url address with given api token and given rover name
+     */
     function fetchRoverInfo(apiUrl: string) {
         axios.get(apiUrl).then(
             (response) => {
@@ -72,6 +76,10 @@ const Nasa: FC = () => {
         );
     }
 
+    /**
+     * Helper function to fetch list of photos with given values
+     * @param apiUrl Api url address with given api token and given rover name, camera name and sol
+     */
     function fetchPhotoList(apiUrl: string) {
         axios.get(apiUrl).then(
             (response) => {
@@ -89,9 +97,11 @@ const Nasa: FC = () => {
 
     function displayLoadingStatus() {
         if (!roverKeyFetched) {
+            // Load when any values are not chosen
             return <NoResult />;
         }
         else {
+            // Load when values are not filled yet
             return (
                 <div className="loading">
                     <p>Please fill in other informations</p>
