@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, ChangeEvent } from 'react';
 import axios from 'axios';
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField, CircularProgress } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField, CircularProgress, Container } from '@mui/material';
 
 import PhotoComponent from '../photoContent';
 import NoResult from '../noResult';
@@ -169,19 +169,19 @@ const Nasa: FC = () => {
                 </FormControl>
             </div>
             <div className="content-body">
-                {dataList.length !== 0 ? 
-                    (dataList.map((photo, photoKey) => (
-                        <PhotoComponent
-                            key={photoKey}
-                            photoId={photo["id"]}
-                            image={photo["img_src"]}
-                            roverName={photo["rover"]["name"]}
-                            cameraName={photo["camera"]["full_name"]}
-                            earthDate={photo["earth_date"]}
-                        />
-                    )))
-                    : displayLoadingStatus()
-                }
+                    {dataList.length !== 0 ? 
+                        (dataList.map((photo, photoKey) => (
+                            <PhotoComponent
+                                key={photoKey}
+                                photoId={photo["id"]}
+                                image={photo["img_src"]}
+                                roverName={photo["rover"]["name"]}
+                                cameraName={photo["camera"]["full_name"]}
+                                earthDate={photo["earth_date"]}
+                            />
+                        )))
+                        : displayLoadingStatus()
+                    }
             </div>
         </div>
     )

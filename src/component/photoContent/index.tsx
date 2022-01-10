@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardMedia, CardContent, Typography, Button } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, Button, ButtonBase } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CheckIcon from '@mui/icons-material/Check';
 import './photoContent.css';
@@ -70,12 +70,16 @@ const PhotoComponent = (props: PhotoContentProps) => {
 
     return (
         <Card className="card-content">
-            <CardMedia
-                component="img"
-                height="194"
-                image={props.image}
-                alt="space-photo"
-            />
+            <ButtonBase
+                href={props.image}
+            >
+                <CardMedia
+                    component="img"
+                    height="194"
+                    image={props.image}
+                    alt="space-photo"
+                />
+            </ButtonBase>
             <CardContent className="body-content">
                 <div>
                     <Typography className="rover-name" variant="body1" color="text.secondary">
