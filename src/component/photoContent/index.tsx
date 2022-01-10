@@ -76,15 +76,13 @@ const PhotoComponent = (props: PhotoContentProps) => {
                 image={props.image}
                 alt="space-photo"
             />
-            <CardContent>
-                <div className="body-content">
+            <CardContent className="body-content">
                     <Typography className="rover-name" variant="body1" color="text.secondary">
                         {props.roverName} rover - {props.cameraName}
                     </Typography>
                     <Typography className="earth-date-info" variant="body2" color="text.secondary">
                         {props.earthDate}
                     </Typography>
-                </div>
             </CardContent>
             <Button className="like-button" variant="contained" onClick={handleNumLike}>
                 {liked === false ? <ThumbUpIcon className="thumb-icon" /> : <CheckIcon className="check-icon" />}
