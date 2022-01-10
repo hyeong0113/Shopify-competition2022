@@ -11,6 +11,11 @@ url: https://shopifynasaapp.herokuapp.com/
 ## Technology used
 For implementation, React Hooks and typescript are used. For UI component, Material UI is used to ellaborate the frontend.
 
+## Improvements
+- Loading status added
+- Display max value of sol for user input
+- Save number of likes even refresh the page
+
 ## Available Scripts
 
 In the project directory, you can run:
